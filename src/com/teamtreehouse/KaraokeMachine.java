@@ -18,14 +18,14 @@ import java.util.Queue;
 public class KaraokeMachine {
     private SongBook mSongBook;
     private BufferedReader mReader;
-    private Queue<SongRequest> mSongQueue;
+    private Queue<SongRequest> mSongRequestQueue;
 
     private Map<String, String> mMenu;
 
     public KaraokeMachine(SongBook songBook) {
         mSongBook = songBook;
         mReader = new BufferedReader(new InputStreamReader(System.in));
-        mSongQueue = new ArrayDeque<>();
+        mSongRequestQueue = new ArrayDeque<>();
         mMenu = new HashMap<String, String>();
         mMenu.put("add", "Add a new song to the song book");
         mMenu.put("play", "Play next song in the queue");
@@ -36,7 +36,7 @@ public class KaraokeMachine {
     private String promptAction() throws IOException {
         System.out.printf("There are %d songs available and %d in the queue.  Your options are: %n",
                 mSongBook.getSongCount(),
-                mSongQueue.size());
+                mSongRequestQueue.size());
         for (Map.Entry<String, String> option : mMenu.entrySet()) {
             System.out.printf("%s - %s %n",
                     option.getKey(),
@@ -63,13 +63,13 @@ public class KaraokeMachine {
                         String artist = promptArtist();
                         Song artistSong = promptSongForArtist(artist);
                         SongRequest songRequest = new SongRequest(singerName, artistSong);
-                        if (mSongQueue.contains(songRequest)) {
+                        if (mSongRequestQueue.contains(songRequest)) {
                             System.out.printf("%n%n Whoops %s already requested %s!",
                                     singerName,
                                     artistSong);
                             break;
                         }
-                        mSongQueue.add(songRequest);
+                        mSongRequestQueue.add(songRequest);
                         System.out.printf("You chose:  %s %n", artistSong);
                         break;
                     case "play":
@@ -135,7 +135,7 @@ public class KaraokeMachine {
     }
 
     public void playNext() {
-        SongRequest songRequest = mSongQueue.poll();
+        SongRequest songRequest = mSongRequestQueue.poll();
         if (songRequest == null) {
             System.out.println("Sorry there are no songs in the queue." +
                     "  Use choose from the menu to add some");

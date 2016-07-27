@@ -1,4 +1,4 @@
-import com.teamtreehouse.model.KaraokeMachine;
+import com.teamtreehouse.KaraokeMachine;
 import com.teamtreehouse.model.SongBook;
 
 public class Karaoke {
